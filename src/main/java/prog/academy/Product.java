@@ -1,6 +1,7 @@
 package prog.academy;
 
 import javax.persistence.*;
+import java.text.DecimalFormat;
 import java.util.*;
 
 @Entity
@@ -70,7 +71,8 @@ public class Product {
 
     @Override
     public String toString() {
-        return "Product: " + title + " | price " + price + " UAH. | id: " + id;
+        DecimalFormat decimal = new DecimalFormat("#.##");
+        return "Product: " + title + " | price " + decimal.format(price) + " UAH. | id: " + id;
     }
 
     @Override
