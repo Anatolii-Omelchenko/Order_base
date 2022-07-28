@@ -2,15 +2,14 @@ package prog.academy;
 
 import javax.persistence.*;
 import java.util.HashSet;
-import java.util.Objects;
 import java.util.Set;
 
 @Entity
-@Table(name = "clients")
+@Table(name = "my_clients")
 public class Client {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "client_id")
     private Long id;
 
@@ -23,14 +22,12 @@ public class Client {
     public Client() {
     }
 
-    public Client(Long id, String name) {
-        this.id = id;
+    public Client(String name) {
         this.name = name;
     }
 
     public void addOrder(Order order){
         orders.add(order);
-        order.setClient(this);
     }
 
     public Long getId() {
@@ -51,22 +48,8 @@ public class Client {
 
     @Override
     public String toString() {
-        return "Client{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                '}';
+        return "Client name: " + name + " | id: " + id;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Client client = (Client) o;
-        return Objects.equals(id, client.id) && Objects.equals(name, client.name);
-    }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, name);
-    }
 }

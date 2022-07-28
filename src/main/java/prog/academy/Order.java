@@ -1,34 +1,40 @@
 package prog.academy;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 @Entity
-@Table(name = "orders")
+@Table(name = "my_orders")
 public class Order {
 
     @Id
     @Column(name = "order_id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne
     @JoinColumn(name = "client_id")
     private Client client;
 
-    @ManyToMany(mappedBy = "orders")
+    @ManyToMany(mappedBy = "orderList")
     private List<Product> products = new ArrayList<>();
 
     public Order() {
     }
 
-    public Order(Long id, Client client) {
-        this.id = id;
+    public Order(Client client) {
         this.client = client;
     }
 
-    public void addProduct(Product product){
+    public List<Product> getProducts() {
+        return products;
+    }
+
+    public void setProducts(List<Product> products) {
+        this.products = products;
+    }
+
+    public void addProduct(Product product) {
         products.add(product);
         product.addOrder(this);
     }
@@ -51,10 +57,13 @@ public class Order {
 
     @Override
     public String toString() {
-        return "Order{" +
-                "id=" + id +
-                ", client=" + client +
-                '}';
+
+        StringBuilder productsFromOrder = new StringBuilder();
+        for (Product product : products) {
+            productsFromOrder.append(product).append("\n");
+        }
+
+        return "Order id: " + id + " | Client: " + client.getName() + "\n\tProducts: \n" + productsFromOrder;
     }
 
     @Override

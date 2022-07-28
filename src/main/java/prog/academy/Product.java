@@ -1,16 +1,15 @@
 package prog.academy;
 
 import javax.persistence.*;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 @Entity
-@Table(name = "products")
+@Table(name = "my_products")
 public class Product {
 
     @Id
-    @Column(name = "product_id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "my_product_id")
     private Long id;
 
     @Column(nullable = false)
@@ -19,24 +18,30 @@ public class Product {
     @Column(nullable = false)
     private Float price;
 
-    @ManyToMany(cascade = CascadeType.PERSIST)
-    @JoinTable(name = "product_orders",
-    joinColumns = @JoinColumn(name="product_id"),
-    inverseJoinColumns = @JoinColumn(name = "order"))
-    private Set<Order> orders = new HashSet<>();
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinTable(name = "product_order",
+            joinColumns = @JoinColumn(name = "product_id"),
+            inverseJoinColumns = @JoinColumn(name = "order_id"))
+    private List<Order> orderList = new ArrayList<>();
 
     public Product() {
     }
 
-    public Product(Long id, String title, Float price) {
-        this.id = id;
+    public Product(String title, Float price) {
         this.title = title;
         this.price = price;
     }
 
-    public void addOrder(Order order){
-        orders.add(order);
-        order.addProduct(this);
+    public void addOrder(Order order) {
+        orderList.add(order);
+    }
+
+    public List<Order> getOrderList() {
+        return orderList;
+    }
+
+    public void setOrderList(List<Order> orderSet) {
+        this.orderList = orderSet;
     }
 
     public Long getId() {
@@ -65,11 +70,7 @@ public class Product {
 
     @Override
     public String toString() {
-        return "Product{" +
-                "id=" + id +
-                ", title='" + title + '\'' +
-                ", price=" + price +
-                '}';
+        return "Product: " + title + " | price " + price + " UAH. | id: " + id;
     }
 
     @Override
