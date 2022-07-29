@@ -4,6 +4,9 @@ import javax.persistence.*;
 import java.util.List;
 import java.util.Scanner;
 import java.util.concurrent.Callable;
+import java.util.stream.Stream;
+
+import static java.util.stream.Collectors.toList;
 
 public class OrderBaseMain {
 
@@ -16,6 +19,7 @@ public class OrderBaseMain {
         em = emf.createEntityManager();
         Scanner scanner = new Scanner(System.in);
 
+        fillDatabaseWithProducts();
         try {
             while (true) {
                 System.out.println("1: make order\n");
@@ -139,6 +143,29 @@ public class OrderBaseMain {
             em.persist(product);
             return null;
         });
+    }
+
+    private static void fillDatabaseWithProducts() {
+        List<Product> phones = Stream.of(
+                new Product("Samsung Galaxy M52", 9999F),
+                new Product("Vivo Y31 Premium", 6499F),
+                new Product("Xiaomi Poco X3 Pro", 8999F),
+                new Product("Realme 8 Pro", 6999F),
+                new Product("OnePlus Nord N10", 7499F),
+                new Product("Google Pixel 6 Pro", 32699F),
+                new Product("ASUS ROG Phone 5 Pro", 49900F),
+                new Product("Nokia 1100", 899F),
+                new Product("Motorola E398", 1099F),
+                new Product("Sony Ericsson K700i", 799F)
+        ).collect(toList());
+
+        for (Product product : phones) {
+            performTransaction(() -> {
+                em.persist(product);
+                return null;
+            });
+        }
+
     }
 
 
