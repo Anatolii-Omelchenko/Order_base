@@ -19,6 +19,9 @@ public class Order {
     @ManyToMany(mappedBy = "orderList")
     private List<Product> products = new ArrayList<>();
 
+    @Column(length = 100)
+    private String comment = "no comment.";
+
     public Order() {
     }
 
@@ -55,6 +58,14 @@ public class Order {
         this.client = client;
     }
 
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
+    }
+
     @Override
     public String toString() {
 
@@ -63,7 +74,9 @@ public class Order {
             productsFromOrder.append(product).append("\n");
         }
 
-        return "Order id: " + id + " | Client: " + client.getName() + "\n\tProducts: \n" + productsFromOrder;
+        return "Order id: " + id + " | Client: " + client.getName()
+                + "\n\tProducts: \n" + productsFromOrder
+                + "Comment: " + comment;
     }
 
     @Override

@@ -77,6 +77,7 @@ public class OrderBaseMain {
         System.out.println("\n\tAll orders:");
         for (Order order : orders) {
             System.out.println(order);
+            System.out.println();
         }
         System.out.println();
     }
@@ -110,6 +111,15 @@ public class OrderBaseMain {
 
             Product product = em.getReference(Product.class, product_id);
             order.addProduct(product);
+        }
+
+        System.out.print("Add comment to order?\nY/N ->");
+        String choose = scanner.nextLine();
+
+        if (choose.equalsIgnoreCase("Y")) {
+            System.out.print("Your comment:");
+            String comment = scanner.nextLine();
+            order.setComment(comment);
         }
 
         performTransaction(() -> {
