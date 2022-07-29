@@ -76,7 +76,7 @@ public class Order {
 
         return "Order id: " + id + " | Client: " + client.getName()
                 + "\n\tProducts: \n" + productsFromOrder
-                + "Comment: " + comment;
+                + "\nComment: " + comment;
     }
 
     @Override
